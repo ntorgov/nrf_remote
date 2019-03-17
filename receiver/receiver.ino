@@ -1,17 +1,17 @@
 /*
-* Arduino Wireless Communication Tutorial
-*       Example 1 - Receiver Code
-*                
-* by Dejan Nedelkovski, www.HowToMechatronics.com
-* 
-* Library: TMRh20/RF24, https://github.com/tmrh20/RF24/
+  NRF receiver
 */
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
+
+
+
 RF24 radio(7, 8); // CE, CSN
 const byte address[6] = "00001";
+
 void setup() {
+  pinMode(4, OUTPUT);
   Serial.begin(9600);
   radio.begin();
   radio.openReadingPipe(0, address);
@@ -22,6 +22,24 @@ void loop() {
   if (radio.available()) {
     char text[32] = "";
     radio.read(&text, sizeof(text));
+    int xPosition, yPosition, buttonPosition;
+    char junk[1];
+    char xJunk[3];
+    char yJunk[6];
+    char btnJunk[7];
+
+    sscanf(text, "%s%d,%s%d,%s%d", 
+    &xJunk, &xPosition,
+    &yJunk, &yPosition,
+    &btnJunk, &buttonPosition
+    );
+
+    if (buttonPosition == 0) {
+      digitalWrite(4, LOW);
+    } else {
+      digitalWrite(4, HIGH);
+    }
+
     Serial.println(text);
   }
 }
