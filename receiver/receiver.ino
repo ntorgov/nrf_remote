@@ -14,7 +14,7 @@ void setup()
     Serial.begin(9600);
     radio.begin();
     radio.openReadingPipe(0, address);
-    radio.setPALevel(RF24_PA_MIN); // @todo Нужно подкрутить уровень
+    radio.setPALevel(RF24_PA_MIN); // @todo Нужно подкрутить уровень, RF24_PA_MIN, есть не проверенная инфа, что с этим уровнем глюки
     radio.startListening();
 }
 
